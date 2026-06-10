@@ -76,6 +76,15 @@ const M: Meta = {
   ],
   deploy:
     'Vite 빌드(base: "./") 후 GitHub Actions(deploy.yml)가 main push 시 GitHub Pages로 자동 배포 → aebonlee.github.io/project18/',
+  scope: {
+    include: ['분야 선택 → 용어 카드(뜻·예문)·익힘 진도', '4지선다 퀴즈·AI 예문(선택)', '내장 용어은행 + AI 보조'],
+    exclude: ['실시간 뉴스 크롤링', '난이도 자동 적응', '학습 통계 서버'],
+  },
+  pitch: [
+    '용어를 먼저 잡으면 같은 기사도 더 잘 읽힌다는 관점',
+    '카드+퀴즈로 간격 반복(spaced) 복습',
+    '키 없이도 내장 데이터로 완전 동작',
+  ],
   stack: ['React 18', 'TypeScript', 'Vite', 'localStorage', 'OpenAI(선택)'],
 };
 
