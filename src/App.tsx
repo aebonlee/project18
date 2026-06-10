@@ -35,6 +35,47 @@ const M: Meta = {
     { title: '왜 용어부터인가', body: '문장의 의미는 핵심어가 좌우합니다. 모르는 용어 1~2개가 전체 문단의 이해를 막습니다. 용어를 먼저 잡으면 같은 기사도 더 빠르고 정확히 읽힙니다.' },
     { title: '간격 반복(spaced)', body: '한 번에 외우기보다 매일 조금씩, 퀴즈로 반복하는 편이 장기 기억에 유리합니다. 익힌 용어 체크는 약한 용어부터 복습하는 기준이 됩니다.' },
   ],
+  targets: ['뉴스를 깊이 읽고 싶은 사람', '분야별 용어가 약한 학습자', '매일 어휘를 쌓고 싶은 사람'],
+  goals: [
+    '분야별 핵심 용어를 예문과 함께 학습한다',
+    '퀴즈로 복습해 나만의 사전을 구성한다',
+    'API 키가 없어도 카드·퀴즈가 동작하게 한다',
+  ],
+  scenarios: [
+    '관심 분야를 고른다',
+    '용어 카드를 넘기며 익히고 "익힘"을 체크한다',
+    '퀴즈 탭에서 4지선다로 복습한다',
+  ],
+  screens: [
+    { name: '분야 선택', desc: '문해력·영어·IT·경제 분야 + 익힘 진도' },
+    { name: '용어 카드', desc: '뜻 + 뉴스 예문 + 익힘 표시 + AI 예문 생성' },
+    { name: '퀴즈', desc: '용어 뜻 4지선다 + 점수' },
+  ],
+  pipelineDetail: [
+    { step: '용어 선택', detail: '분야를 고르면 내장 용어 은행에서 카드를 구성한다.' },
+    { step: '학습 · 진도', detail: '카드의 뜻·예문을 익히고 "익힘"을 localStorage(nv_learned)에 저장한다.' },
+    { step: '퀴즈 생성', detail: '같은 분야 용어로 정답+오답 보기를 섞어 4지선다를 만든다.' },
+    { step: 'AI 예문(선택)', detail: '키가 있으면 고른 용어로 새 뉴스 예문·쉬운 풀이를 생성한다.' },
+  ],
+  promptNotes: [
+    '고른 용어와 뜻을 담아 실제 뉴스에 나올 법한 예문 2개와 초보자용 쉬운 풀이를 생성하도록 system 프롬프트로 지시한다.',
+    '용어 카드·퀴즈는 내장 용어 은행으로 키 없이도 완전히 동작한다.',
+  ],
+  architecture:
+    '백엔드 없는 React SPA. 공통 레이아웃·5탭은 src/ui.tsx, 학습 기능은 src/App.tsx가 담당한다. ' +
+    '용어 카드·퀴즈는 내장 데이터로 동작하고, AI 예문은 src/lib/ai.ts(선택)로 생성하며, 익힘 진도는 브라우저 localStorage에 저장한다.',
+  structure: [
+    { path: 'src/App.tsx', desc: '분야별 용어 카드·퀴즈·AI 예문 + 메타(M)' },
+    { path: 'src/ui.tsx', desc: '공통 레이아웃·5탭·UI 헬퍼' },
+    { path: 'src/lib/ai.ts', desc: 'OpenAI chat 헬퍼(선택 예문 생성)' },
+    { path: 'src/index.css', desc: '테마·카드/퀴즈 스타일' },
+  ],
+  dataModel: [
+    { name: 'Term', desc: '용어·뜻·뉴스 예문' },
+    { name: '진도', desc: 'localStorage "nv_field"(분야)·"nv_learned"(익힘)' },
+  ],
+  deploy:
+    'Vite 빌드(base: "./") 후 GitHub Actions(deploy.yml)가 main push 시 GitHub Pages로 자동 배포 → aebonlee.github.io/project18/',
   stack: ['React 18', 'TypeScript', 'Vite', 'localStorage', 'OpenAI(선택)'],
 };
 
